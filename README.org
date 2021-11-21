@@ -1,0 +1,72 @@
+#+title: embark-magit
+#+author: Ellis Kenyő
+#+date: 2021-11-21
+#+latex_class: chameleon
+
+Some glue between two of my favourite projects, embark and magit. As it's
+(currently) quite simple, there's not much to document. /As that changes, so
+will this/.
+
+* Terminology
+In the context of Magit, Issues and Pull Requests are both marked as "topics",
+and are referred to as such in the codebase to denote actions that apply to
+both. For example, setting the title of an Issue or a Pull Request is
+fundamentally the same operation, however Issues can't be merged.
+
+So the "topic" actions are defined as actions that would apply to both Issues
+and Pull Requests, with both also having their own set of actions to act on.
+
+* Install
+** Standard
+Clone the repo, add to your load-path
+** MELPA
+Soon
+** Doom Emacs
+Append the following to the corresponding file:
+
+*** =packages.el=
+#+begin_src emacs-lisp
+(package! embark-magit
+  :recipe (:host github :repo "elken/embark-magit"))
+#+end_src
+
+*** =config.el=
+#+begin_src emacs-lisp
+(use-package! embark-magit
+  :after embark)
+#+end_src
+
+* Keymaps
+Currently all it really does is create some targets and add some wrapped
+verisons of existing functions.
+
+** =topic=
+Keymap applies to both Pull Requests and Issues, so won't be duplicated there
+
+| key | action                          |
+|-----+---------------------------------|
+| =y=   | =forge-copy-url-at-point-as-kill= |
+| =s=   | =embark-magit-edit-topic-state=   |
+| =t=   | =embark-magit-edit-topic-title=   |
+| =l=   | =embark-magit-edit-topic-labels=  |
+
+** =pull-request=
+Only list actions that are relevant to just Pull Requests
+
+| key | action                    |
+|-----+---------------------------|
+| =r=   | =embark-magit-start-review= |
+| =n=   | =forge-merge=               |
+
+** =issue=
+Only list actions that are relevant to just Issues
+
+| key | action |
+|-----+--------|
+
+** =commit=
+Only list actions that are relevant to Commits
+
+| key | action              |
+|-----+---------------------|
+| =b=   | =forge-browse-commit= |
