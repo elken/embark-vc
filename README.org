@@ -1,9 +1,9 @@
-#+title: embark-magit
+#+title: embark-vc
 #+author: Ellis Kenyő
 #+date: 2021-11-21
 #+latex_class: chameleon
 
-Some glue between two of my favourite projects, embark and magit. As it's
+Some glue between embark and a number of vc packages. As it's
 (currently) quite simple, there's not much to document. /As that changes, so
 will this/.
 
@@ -26,13 +26,13 @@ Append the following to the corresponding file:
 
 *** =packages.el=
 #+begin_src emacs-lisp
-(package! embark-magit
-  :recipe (:host github :repo "elken/embark-magit"))
+(package! embark-vc
+  :recipe (:host github :repo "elken/embark-vc"))
 #+end_src
 
 *** =config.el=
 #+begin_src emacs-lisp
-(use-package! embark-magit
+(use-package! embark-vc
   :after embark)
 #+end_src
 
@@ -46,16 +46,16 @@ Keymap applies to both Pull Requests and Issues, so won't be duplicated there
 | key | action                          |
 |-----+---------------------------------|
 | =y=   | =forge-copy-url-at-point-as-kill= |
-| =s=   | =embark-magit-edit-topic-state=   |
-| =t=   | =embark-magit-edit-topic-title=   |
-| =l=   | =embark-magit-edit-topic-labels=  |
+| =s=   | =embark-vc-edit-topic-state=   |
+| =t=   | =embark-vc-edit-topic-title=   |
+| =l=   | =embark-vc-edit-topic-labels=  |
 
 ** =pull-request=
 Only list actions that are relevant to just Pull Requests
 
 | key | action                    |
 |-----+---------------------------|
-| =r=   | =embark-magit-start-review= |
+| =r=   | =embark-vc-start-review= |
 | =n=   | =forge-merge=               |
 
 ** =issue=
