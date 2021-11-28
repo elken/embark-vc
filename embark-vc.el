@@ -9,7 +9,7 @@
 ;; Version: 0.2
 ;; Keywords: convenience matching terminals tools unix vc
 ;; Homepage: https://github.com/elken/embark-vc
-;; Package-Requires: ((emacs "25.1") (code-review))
+;; Package-Requires: ((emacs "26.1") (code-review "0.0.2") (embark "0.13") (forge "0.3"))
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
@@ -23,6 +23,7 @@
 (require 'embark)
 (require 'forge-commands)
 (require 'code-review)
+(require 's)
 
 (defun embark-vc-target-topic-at-point ()
   "Target a Topic in the context of Magit."
@@ -44,6 +45,21 @@
           (save-match-data
             (when (string-match "\\b[0-9a-f]\\{5,40\\}\\b" str)
               `(commit ,str))))))))
+
+(defun embark-vc-target-conflict-at-point ()
+  "Target a Merge Conflict at point."
+  (when (or (derived-mode-p 'magit-mode)
+            smerge-mode)
+    (when-let* ((beg (save-excursion (when (search-backward "<<<<<<<" nil t)
+                                       (move-to-left-margin)
+                                       (point))))
+                (end (save-excursion (when (search-forward ">>>>>>>" nil t)
+                                       (move-end-of-line nil)
+                                       (point))))
+                (str (buffer-substring-no-properties beg end)))
+      (save-match-data
+        (when (string-match "<<<<<<<.*?=======.*?>>>>>>>" (s-replace "\n" "" str))
+          `(conflict "test" ,beg . ,end))))))
 
 (defun embark-vc-id-to-topic (id)
   "Convert a given ID to a topic."
@@ -86,33 +102,42 @@
   (when-let ((pr (embark-vc-id-to-url id)))
     (code-review-start pr)))
 
-(embark-define-keymap embark-vc-topic-actions
+(embark-define-keymap embark-vc-topic-map
   "Keymap for actions related to Topics"
   ("y" forge-copy-url-at-point-as-kill)
   ("s" embark-vc-edit-topic-state)
   ("t" embark-vc-edit-topic-title)
   ("l" embark-vc-edit-topic-labels))
 
-(embark-define-keymap embark-vc-pull-request-actions
+(embark-define-keymap embark-vc-pull-request-map
   "Keymap for actions related to Pull Requests"
-  :parent embark-vc-topic-actions
+  :parent embark-vc-topic-map
   ("r" embark-vc-start-review)
   ("m" forge-merge))
 
-(embark-define-keymap embark-vc-issue-actions
+(embark-define-keymap embark-vc-issue-map
   "Keymap for actions related to Issues"
-  :parent embark-vc-topic-actions)
+  :parent embark-vc-topic-map)
 
-(embark-define-keymap embark-vc-commit-actions
+(embark-define-keymap embark-vc-commit-map
   "Keymap for actions related to Commits"
   ("b" forge-browse-commit))
 
-(add-to-list 'embark-keymap-alist '(pull-request . embark-vc-pull-request-actions))
-(add-to-list 'embark-keymap-alist '(issue . embark-vc-issue-actions))
-(add-to-list 'embark-keymap-alist '(commit . embark-vc-commit-actions))
+(embark-define-keymap embark-vc-conflict-map
+  "Keymap for actions related to Merge Conflicts"
+  ("t" smerge-keep-upper)
+  ("b" smerge-keep-lower)
+  ("a" smerge-keep-all)
+  ("d" smerge-ediff))
+
+(add-to-list 'embark-keymap-alist '(pull-request . embark-vc-pull-request-map))
+(add-to-list 'embark-keymap-alist '(issue . embark-vc-issue-map))
+(add-to-list 'embark-keymap-alist '(commit . embark-vc-commit-map))
+(add-to-list 'embark-keymap-alist '(conflict . embark-vc-conflict-map))
 
 (add-to-list 'embark-target-finders 'embark-vc-target-topic-at-point)
 (add-to-list 'embark-target-finders 'embark-vc-target-commit-at-point)
+(add-to-list 'embark-target-finders 'embark-vc-target-conflict-at-point)
 
 (provide 'embark-vc)
 ;;; embark-vc.el ends here

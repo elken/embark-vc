@@ -7,6 +7,14 @@ Some glue between embark and a number of vc packages. As it's
 (currently) quite simple, there's not much to document. /As that changes, so
 will this/.
 
+Currently provides targets and actions for:
+- Magit (forge)
+- smerge-mode
+- code-review
+
+All of which are considered dependencies, but as the package grows they will
+become optional (if I did that now, it wouldn't do anything!)
+
 * Terminology
 In the context of Magit, Issues and Pull Requests are both marked as "topics",
 and are referred to as such in the codebase to denote actions that apply to
@@ -70,3 +78,13 @@ Only list actions that are relevant to Commits
 | key | action              |
 |-----+---------------------|
 | =b=   | =forge-browse-commit= |
+
+** =conflict=
+Only list actions that are relevant to Merge Conflicts
+
+| key | action            |
+|-----+-------------------|
+| =t=   | =smerge-keep-upper= |
+| =b=   | =smerge-keep-lower= |
+| =a=   | =smerge-keep-all=   |
+| =d=   | =smerge-ediff=      |
