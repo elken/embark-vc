@@ -63,7 +63,7 @@
 
 (defun embark-vc-id-to-topic (id)
   "Convert a given ID to a topic."
-  (when-let ((pr (forge-get-topic (string-to-number id))))
+  (when-let ((pr (forge-get-topic (if (stringp id) (string-to-number id) id))))
     pr))
 
 (defun embark-vc-get-topic-title (topic)
