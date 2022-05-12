@@ -63,7 +63,8 @@ Only list actions that are relevant to just Pull Requests
 
 | key | action                    |
 |-----+---------------------------|
-| =r=   | =embark-vc-start-review= |
+| =b=   | =embark-vc-checkout-branch= |
+| =r=   | =embark-vc-start-review=    |
 | =n=   | =forge-merge=               |
 
 ** =issue=

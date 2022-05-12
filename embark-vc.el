@@ -102,6 +102,10 @@
   (when-let ((pr (embark-vc-id-to-url id)))
     (code-review-start pr)))
 
+(defun embark-vc-checkout-branch (id)
+  (when-let ((pr (embark-vc-id-to-topic id)))
+    (forge-checkout-pullreq pr)))
+
 (embark-define-keymap embark-vc-topic-map
   "Keymap for actions related to Topics"
   ("y" forge-copy-url-at-point-as-kill)
@@ -112,6 +116,7 @@
 (embark-define-keymap embark-vc-pull-request-map
   "Keymap for actions related to Pull Requests"
   :parent embark-vc-topic-map
+  ("b" embark-vc-checkout-branch)
   ("r" embark-vc-start-review)
   ("m" forge-merge))
 
