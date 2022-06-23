@@ -9,7 +9,7 @@
 ;; Version: 0.2
 ;; Keywords: convenience matching terminals tools unix vc
 ;; Homepage: https://github.com/elken/embark-vc
-;; Package-Requires: ((emacs "26.1") (code-review "0.0.2") (embark "0.13") (forge "0.3"))
+;; Package-Requires: ((emacs "26.1") (code-review "0.0.2") (embark "0.13") (forge "0.3") (s "1.12.0"))
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
