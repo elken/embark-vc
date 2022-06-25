@@ -11,8 +11,20 @@
 ;; Homepage: https://github.com/elken/embark-vc
 ;; Package-Requires: ((emacs "26.1") (code-review "0.0.2") (embark "0.13") (forge "0.3") (s "1.12.0"))
 ;;
-;; This file is not part of GNU Emacs.
-;;
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License as
+;; published by the Free Software Foundation, either version 3 of the
+;; License, or (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful, but
+;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;; General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see
+;; <http://www.gnu.org/licenses/>.
+;
 ;;; Commentary:
 ;;
 ;; Some actions and conveniences for interacting with various vc-related
@@ -84,7 +96,7 @@
   "Edit the title for a topic by ID."
   (when-let ((topic (embark-vc-id-to-topic id)))
     (when (magit-y-or-n-p
-           (format "%s %S"
+           (format "%s %S?"
                    (cl-ecase (oref topic state)
                      (merged (error "Merged pull-requests cannot be reopened"))
                      (closed "Reopen")
@@ -103,6 +115,7 @@
     (code-review-start pr)))
 
 (defun embark-vc-checkout-branch (id)
+  "Checkout a branch for a topic by ID."
   (when-let ((pr (embark-vc-id-to-topic id)))
     (forge-checkout-pullreq pr)))
 
