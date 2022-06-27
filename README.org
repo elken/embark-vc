@@ -3,6 +3,8 @@
 #+date: 2021-11-21
 #+latex_class: chameleon
 
+[[https://melpa.org/#/embark-vc][file:https://melpa.org/packages/embark-vc-badge.svg]]
+
 Some glue between embark and a number of vc packages. As it's
 (currently) quite simple, there's not much to document. /As that changes, so
 will this/.
@@ -28,14 +30,13 @@ and Pull Requests, with both also having their own set of actions to act on.
 ** Standard
 Clone the repo, add to your load-path
 ** MELPA
-Soon
+Install using your favourite package manager
 ** Doom Emacs
 Append the following to the corresponding file:
 
 *** =packages.el=
 #+begin_src emacs-lisp
-(package! embark-vc
-  :recipe (:host github :repo "elken/embark-vc"))
+(package! embark-vc)
 #+end_src
 
 *** =config.el=
@@ -54,9 +55,9 @@ Keymap applies to both Pull Requests and Issues, so won't be duplicated there
 | key | action                          |
 |-----+---------------------------------|
 | =y=   | =forge-copy-url-at-point-as-kill= |
-| =s=   | =embark-vc-edit-topic-state=   |
-| =t=   | =embark-vc-edit-topic-title=   |
-| =l=   | =embark-vc-edit-topic-labels=  |
+| =s=   | =embark-vc-edit-topic-state=      |
+| =t=   | =embark-vc-edit-topic-title=      |
+| =l=   | =embark-vc-edit-topic-labels=     |
 
 ** =pull-request=
 Only list actions that are relevant to just Pull Requests
