@@ -1,4 +1,4 @@
-#+title: embark-vc
+#+title: embark-vc 🚀
 #+author: Ellis Kenyő
 #+date: 2021-11-21
 #+latex_class: chameleon
