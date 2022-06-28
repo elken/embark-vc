@@ -1,4 +1,4 @@
-;;; embark-vc.el --- Embark actions for various VC integrations -*- lexical-binding: t; -*-
+;;; embark-vc.el --- Embark actions for various version control integrations -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2021 Ellis Kenyő
 ;;
@@ -27,7 +27,7 @@
 ;
 ;;; Commentary:
 ;;
-;; Some actions and conveniences for interacting with various vc-related
+;; Some actions and conveniences for interacting with various version control
 ;; packages.
 ;;
 ;; See embark for detailed docs about setup & the README for a table of all the

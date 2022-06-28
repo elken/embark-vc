@@ -5,7 +5,7 @@
 
 [[https://melpa.org/#/embark-vc][file:https://melpa.org/packages/embark-vc-badge.svg]]
 
-Some glue between embark and a number of vc packages. As it's
+Some glue between embark and a number of version control packages. As it's
 (currently) quite simple, there's not much to document. /As that changes, so
 will this/.
 
