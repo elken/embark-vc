@@ -133,6 +133,11 @@
   (when-let ((pr (embark-vc-id-to-topic id)))
     (forge-checkout-pullreq pr)))
 
+(defun embark-vc-visit-pr (id)
+  "Get a pr by ID and visit in a separate buffer."
+  (when-let ((pr (embark-vc-id-to-topic id)))
+    (forge-visit-pullreq pr)))
+
 (embark-define-keymap embark-vc-topic-map
   "Keymap for actions related to Topics"
   ("y" forge-copy-url-at-point-as-kill)
@@ -144,8 +149,10 @@
   "Keymap for actions related to Pull Requests"
   :parent embark-vc-topic-map
   ("b" embark-vc-checkout-branch)
+  ("B" forge-browse-pullreq)
   ("r" embark-vc-start-review)
-  ("m" forge-merge))
+  ("m" forge-merge)
+  ("v" embark-vc-visit-pr))
 
 (embark-define-keymap embark-vc-issue-map
   "Keymap for actions related to Issues"
@@ -157,10 +164,16 @@
 
 (embark-define-keymap embark-vc-conflict-map
   "Keymap for actions related to Merge Conflicts"
-  ("t" smerge-keep-upper)
-  ("b" smerge-keep-lower)
   ("a" smerge-keep-all)
-  ("d" smerge-ediff))
+  ("b" smerge-keep-base)
+  ("c" smerge-combine-with-next)
+  ("d" smerge-ediff)
+  ("l" smerge-keep-lower)
+  ("n" smerge-next)
+  ("p" smerge-prev)
+  ("r" smerge-resolve)
+  ("R" smerge-refine)
+  ("u" smerge-keep-upper))
 
 (add-to-list 'embark-keymap-alist '(pull-request . embark-vc-pull-request-map))
 (add-to-list 'embark-keymap-alist '(issue . embark-vc-issue-map))
