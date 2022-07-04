@@ -9,7 +9,7 @@
 ;; Version: 0.2
 ;; Keywords: convenience matching terminals tools unix vc
 ;; Homepage: https://github.com/elken/embark-vc
-;; Package-Requires: ((emacs "26.1") (code-review "0.0.2") (embark "0.13") (forge "0.3") (s "1.12.0"))
+;; Package-Requires: ((emacs "26.1") (embark "0.13") (forge "0.3") (s "1.12.0"))
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -48,7 +48,6 @@
 
 (require 'embark)
 (require 'forge-commands)
-(require 'code-review)
 (require 's)
 
 (defun embark-vc-target-topic-at-point ()
@@ -150,9 +149,11 @@
   :parent embark-vc-topic-map
   ("b" embark-vc-checkout-branch)
   ("B" forge-browse-pullreq)
-  ("r" embark-vc-start-review)
   ("m" forge-merge)
   ("v" embark-vc-visit-pr))
+
+(when (require 'code-review nil t)
+  (define-key embark-vc-pull-request-map "r" #'embark-vc-start-review))
 
 (embark-define-keymap embark-vc-issue-map
   "Keymap for actions related to Issues"
