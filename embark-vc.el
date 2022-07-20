@@ -147,8 +147,8 @@
 (embark-define-keymap embark-vc-pull-request-map
   "Keymap for actions related to Pull Requests"
   :parent embark-vc-topic-map
-  ("b" embark-vc-checkout-branch)
-  ("B" forge-browse-pullreq)
+  ("c" embark-vc-checkout-branch)
+  ("b" forge-browse-pullreq)
   ("m" forge-merge)
   ("v" embark-vc-visit-pr))
 
