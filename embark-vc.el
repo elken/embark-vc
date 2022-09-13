@@ -24,7 +24,7 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see
 ;; <http://www.gnu.org/licenses/>.
-;
+;;
 ;;; Commentary:
 ;;
 ;; Some actions and conveniences for interacting with various version control
@@ -137,6 +137,19 @@
   (when-let ((pr (embark-vc-id-to-topic id)))
     (forge-visit-pullreq pr)))
 
+(defun embark-vc-merge (id)
+  "Get a pr by ID and merge it."
+  (when-let ((pr (embark-vc-id-to-topic id))
+             (method (if (forge--childp (forge-get-repository t) 'forge-gitlab-repository)
+                         (magit-read-char-case "Merge method " t
+                           (?m "[m]erge"  'merge)
+                           (?s "[s]quash" 'squash))
+                       (magit-read-char-case "Merge method " t
+                         (?m "[m]erge"  'merge)
+                         (?s "[s]quash" 'squash)
+                         (?r "[r]ebase" 'rebase)))))
+    (forge-merge pr method)))
+
 (embark-define-keymap embark-vc-topic-map
   "Keymap for actions related to Topics"
   ("y" forge-copy-url-at-point-as-kill)
@@ -149,7 +162,7 @@
   :parent embark-vc-topic-map
   ("c" embark-vc-checkout-branch)
   ("b" forge-browse-pullreq)
-  ("m" forge-merge)
+  ("m" embark-vc-merge)
   ("v" embark-vc-visit-pr))
 
 (when (require 'code-review nil t)
