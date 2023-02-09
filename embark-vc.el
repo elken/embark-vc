@@ -9,7 +9,7 @@
 ;; Version: 0.2
 ;; Keywords: convenience matching terminals tools unix vc
 ;; Homepage: https://github.com/elken/embark-vc
-;; Package-Requires: ((emacs "26.1") (embark "0.13") (forge "0.3") (s "1.12.0"))
+;; Package-Requires: ((emacs "27.1") (embark "0.21.1") (forge "0.3") (s "1.12.0") (compat "29.1.3.0"))
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -49,6 +49,7 @@
 (require 'embark)
 (require 'forge-commands)
 (require 's)
+(require 'compat)
 
 (defun embark-vc-target-topic-at-point ()
   "Target a Topic in the context of Magit."
@@ -150,44 +151,47 @@
                          (?r "[r]ebase" 'rebase)))))
     (forge-merge pr method)))
 
-(embark-define-keymap embark-vc-topic-map
-  "Keymap for actions related to Topics"
-  ("y" forge-copy-url-at-point-as-kill)
-  ("s" embark-vc-edit-topic-state)
-  ("t" embark-vc-edit-topic-title)
-  ("l" embark-vc-edit-topic-labels))
+(defvar-keymap embark-vc-topic-map
+  :doc "Keymap for actions related to Topics"
+  :parent embark-general-map
+  "y" #'forge-copy-url-at-point-as-kill
+  "s" #'embark-vc-edit-topic-state
+  "t" #'embark-vc-edit-topic-title
+  "l" #'embark-vc-edit-topic-labels)
 
-(embark-define-keymap embark-vc-pull-request-map
-  "Keymap for actions related to Pull Requests"
+(defvar-keymap embark-vc-pull-request-map
+  :doc "Keymap for actions related to Pull Requests"
   :parent embark-vc-topic-map
-  ("c" embark-vc-checkout-branch)
-  ("b" forge-browse-pullreq)
-  ("m" embark-vc-merge)
-  ("v" embark-vc-visit-pr))
+  "c" #'embark-vc-checkout-branch
+  "b" #'forge-browse-pullreq
+  "m" #'embark-vc-merge
+  "v" #'embark-vc-visit-pr)
 
 (when (require 'code-review nil t)
   (define-key embark-vc-pull-request-map "r" #'embark-vc-start-review))
 
-(embark-define-keymap embark-vc-issue-map
-  "Keymap for actions related to Issues"
+(defvar-keymap embark-vc-issue-map
+  :doc "Keymap for actions related to Issues"
   :parent embark-vc-topic-map)
 
-(embark-define-keymap embark-vc-commit-map
-  "Keymap for actions related to Commits"
-  ("b" forge-browse-commit))
+(defvar-keymap embark-vc-commit-map
+  :doc "Keymap for actions related to Commits"
+  :parent embark-general-map
+  "b" #'forge-browse-commit)
 
-(embark-define-keymap embark-vc-conflict-map
-  "Keymap for actions related to Merge Conflicts"
-  ("a" smerge-keep-all)
-  ("b" smerge-keep-base)
-  ("c" smerge-combine-with-next)
-  ("d" smerge-ediff)
-  ("l" smerge-keep-lower)
-  ("n" smerge-next)
-  ("p" smerge-prev)
-  ("r" smerge-resolve)
-  ("R" smerge-refine)
-  ("u" smerge-keep-upper))
+(defvar-keymap embark-vc-conflict-map
+  :doc "Keymap for actions related to Merge Conflicts"
+  :parent embark-general-map
+  "a" #'smerge-keep-all
+  "b" #'smerge-keep-base
+  "c" #'smerge-combine-with-next
+  "d" #'smerge-ediff
+  "l" #'smerge-keep-lower
+  "n" #'smerge-next
+  "p" #'smerge-prev
+  "r" #'smerge-resolve
+  "R" #'smerge-refine
+  "u" #'smerge-keep-upper)
 
 (add-to-list 'embark-keymap-alist '(pull-request . embark-vc-pull-request-map))
 (add-to-list 'embark-keymap-alist '(issue . embark-vc-issue-map))
