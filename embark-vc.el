@@ -9,7 +9,7 @@
 ;; Version: 0.2
 ;; Keywords: convenience matching terminals tools unix vc
 ;; Homepage: https://github.com/elken/embark-vc
-;; Package-Requires: ((emacs "27.1") (embark "0.21.1") (forge "0.3") (s "1.12.0") (compat "29.1.3.0"))
+;; Package-Requires: ((emacs "27.1") (embark "0.21.1") (forge "0.3") (compat "29.1.3.0"))
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -48,7 +48,6 @@
 
 (require 'embark)
 (require 'forge-commands)
-(require 's)
 (require 'compat)
 
 (defun embark-vc-target-topic-at-point ()
@@ -84,7 +83,7 @@
                                        (point))))
                 (str (buffer-substring-no-properties beg end)))
       (save-match-data
-        (when (string-match "<<<<<<<.*?=======.*?>>>>>>>" (s-replace "\n" "" str))
+        (when (string-match "<<<<<<<.*?=======.*?>>>>>>>" (string-replace "\n" "" str))
           `(conflict "test" ,beg . ,end))))))
 
 (defun embark-vc-id-to-topic (id)
