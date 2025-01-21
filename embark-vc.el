@@ -50,6 +50,16 @@
 (require 'forge-commands)
 (require 'compat)
 
+(defcustom embark-vc-review-provider 'code-review
+  "Which code review package to use.
+This was originally inferred to be just code-review but it seems to be
+abandoned now, so this option is provided to let you decide which to
+use.  Set to nil to not include any reviewing functionality."
+  :type '(choice (const :tag "code-review" 'code-review)
+                 (const :tag "pr-review" 'pr-review)
+                 (const :tag "None" nil))
+  :group 'embark-vc)
+
 (defun embark-vc-target-topic-at-point ()
   "Target a Topic in the context of Magit."
   (when (derived-mode-p 'magit-mode)
@@ -124,8 +134,13 @@
 
 (defun embark-vc-start-review (id)
   "Start a review for a topic by ID."
-  (when-let ((pr (embark-vc-id-to-url id)))
-    (code-review-start pr)))
+  (when embark-vc-review-provider
+    (when-let ((pr (embark-vc-id-to-url id)))
+      (unless (require (intern-soft embark-vc-review-provider) nil t)
+        (user-error "You need to install the right package for %S" embark-vc-review-provider))
+      (pcase embark-vc-review-provider
+        ('code-review (code-review-start pr))
+        ('pr-review (pr-review pr))))))
 
 (defun embark-vc-checkout-branch (id)
   "Checkout a branch for a topic by ID."
@@ -164,9 +179,10 @@
   "c" #'embark-vc-checkout-branch
   "b" #'forge-browse-pullreq
   "m" #'embark-vc-merge
-  "v" #'embark-vc-visit-pr)
+  "v" #'embark-vc-visit-pr
+  "r" #'embark-vc-start-review)
 
-(when (require 'code-review nil t)
+(when embark-vc-review-provider
   (define-key embark-vc-pull-request-map "r" #'embark-vc-start-review))
 
 (defvar-keymap embark-vc-issue-map

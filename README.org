@@ -45,6 +45,17 @@ Append the following to the corresponding file:
   :after embark)
 #+end_src
 
+* Configuration
+** embark-vc-review-provider
+This option was introduced to handle the fact that [[https://github.com/wandersoncferreira/code-review/][code-review]] seems
+to be abandoned leaving a number of issues. In order to allow people
+to use an alternative like [[https://github.com/blahgeek/emacs-pr-review][pr-review]], this option was introduced to
+prevent a breaking change.
+
+The currently supported values are the default of =code-review= and the
+preferable =pr-review=, as well as =nil= to just not handle code
+reviewing.
+
 * Keymaps
 Currently all it really does is create some targets and add some wrapped
 verisons of existing functions.
